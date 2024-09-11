@@ -16,6 +16,9 @@
                  <x-navlink :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                      {{ __('Dashboard') }}
                  </x-navlink>
+                 <x-navlink :href="route('repositories')" :active="request()->routeIs('repositories')">
+                     {{ __('Repositories') }}
+                 </x-navlink>
              </div>
          </div>
      </div>
@@ -25,12 +28,17 @@
  <div class="flex-1 flex flex-col">
 
      <!-- Topbar -->
-     <div class="flex justify-between items-center bg-[#121212] text-white/50 w-full h-16 border-b border-l border-gray-800 px-4">
+     <div
+         class="flex justify-between items-center bg-[#121212] text-white/50 w-full h-16 border-b border-l border-gray-800 px-4">
          <span class="text-xl selection:text-gray-400">{{ ucfirst($currentRouteName) }}</span>
-
          <div class="inline-flex items-center space-x-1 cursor-pointer selection:text-gray-400" id="profileDropdownDiv"
              data-dropdown-toggle="profileDropdown">
-             <span class="text-lg">{{ auth()->user()->username }}</span>
+             <div class="flex flex-row space-x-2">
+                 <img src="{{ auth()->user()->avatar_url }}" class="rounded-full h-7 w-7" />
+                 <span class="text-lg">
+                     {{ auth()->user()->username }}
+                 </span>
+             </div>
              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                  stroke="currentColor" class="size-4">
                  <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
@@ -42,7 +50,9 @@
                  <li>
                      <form action="{{ route('logout') }}" method="post">
                          @csrf
-                         <button type="submit" class="block px-4 py-2 hover:bg-gray-100 w-full text-start text-md text-gray-400">
+
+                         <button type="submit"
+                             class="block px-4 py-2 hover:text-white/50 w-full text-start text-md text-gray-400">
                              {{ __('Sign out') }}
                          </button>
                      </form>

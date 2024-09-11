@@ -23,7 +23,7 @@ class RegistrationRules extends FormRequest
     {
         return [
             'name' => 'max:255|string|required',
-            'username' => 'max:255|unique:user|string|required',
+            'username' => 'max:255|unique:users|string|required',
             'email' => 'email|string|max:255|required',
             'password' => 'string|min:8|max:255|confirmed|required',
         ];

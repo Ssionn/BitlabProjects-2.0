@@ -17,6 +17,9 @@
         <div class="min-h-screen relative flex flex-col items-center justify-center selection:text-white">
             <div class="w-full max-w-2xl px-6 lg:max-w-7xl">
                 <header class="flex flex-col items-center space-y-8 animate-fadeIn">
+                    <div class="text-3xl font-bold">
+                        <h1> </h1>
+                    </div>
                     <div class="text-6xl font-bold">
                         <h1>Welcome.</h1>
                     </div>

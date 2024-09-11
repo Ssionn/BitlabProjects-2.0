@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\RepositoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -25,6 +26,7 @@ Route::prefix('/dashboard')->middleware('guest')->group(function () {
 
 Route::prefix('/dashboard')->middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/repositories/view', [RepositoryController::class, 'index'])->name('repositories');
 
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });

@@ -28,9 +28,7 @@ class LoginController extends Controller
             return redirect()->route('dashboard');
         }
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.'
-        ])->onlyInput('email');
+        return back()->with('login_error', "The provided credentials do not match our records.");
     }
 
     public function logout(Request $request)

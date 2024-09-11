@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegistrationRules;
+use App\Jobs\updateUserProfile;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,16 +19,16 @@ class RegisterController extends Controller
 
     public function register(RegistrationRules $rules)
     {
-        $newUser = new User();
-
-        $newUser->name = $rules->name;
-        $newUser->username = $rules->username;
-        $newUser->email = $rules->email;
-        $newUser->password = $rules->password;
-
-        $newUser->save();
+        $newUser = User::create([
+            'name' => $rules->name,
+            'username' => $rules->username,
+            'email' => $rules->email,
+            'password' => $rules->password,
+        ]);
 
         Auth::login($newUser);
+
+        updateUserProfile::dispatch($newUser->username, $newUser->id);
 
         return redirect()->route('dashboard');
     }
