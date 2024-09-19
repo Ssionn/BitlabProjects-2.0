@@ -26,7 +26,10 @@ Route::prefix('/dashboard')->middleware('guest')->group(function () {
 
 Route::prefix('/dashboard')->middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('/dispatch-job', [DashboardController::class, 'getRepositories'])->name('dispatch.job');
+
     Route::get('/repositories/view', [RepositoryController::class, 'index'])->name('repositories');
+    Route::get('/repositories/view/{id}', [RepositoryController::class, 'show'])->name('repositories.show');
 
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });

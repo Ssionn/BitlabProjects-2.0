@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Hashable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Repository extends Model
 {
     use HasFactory;
+    use Hashable;
 
     protected $fillable = [
         'name',

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('commits', function (Blueprint $table) {
             $table->id();
-            $table->string('hash')->unique();
+            $table->string('hash');
             $table->longText('message');
             $table->string('author');
             $table->foreignIdFor(Repository::class);

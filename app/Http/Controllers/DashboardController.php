@@ -3,33 +3,32 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\updateRepositories;
-use App\Models\Commit;
-use App\Models\Issue;
-use App\Models\Repository;
+use App\Repositories\CommitRepository;
+use App\Repositories\IssueRepository;
+use App\Repositories\RepoRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
+    public function __construct(
+        protected RepoRepository $repoRepository,
+        protected IssueRepository $issueRepository,
+        protected CommitRepository $commitRepository
+    ) {
+        $this->repoRepository = $repoRepository;
+        $this->issueRepository = $issueRepository;
+        $this->commitRepository = $commitRepository;
+    }
+
     public function index(): View
     {
-        $this->getRepositories();
+        $user = Auth::user();
 
-        $repositories = Repository::where('user_id', Auth::id())->get();
-
-        $issues = Issue::whereIn('repository_id', $repositories->pluck('id'))->get();
-        $commits = Commit::whereIn('repository_id', $repositories->pluck('id'))->get();
-
-        $authUsername = Auth::user()->username;
-
-        $commits->transform(function ($commit) use ($authUsername) {
-            if ($commit->author === $authUsername) {
-                $commit->author = $commit->author . " (You)";
-            }
-
-            return $commit;
-        });
+        $repositories = $this->repoRepository->getRepositoriesByUserId($user);
+        $issues = $this->issueRepository->getIssuesByRepositoryId($repositories);
+        $commits = $this->commitRepository->getCommitsByRepositoryId($repositories);
 
         return view('dashboard', [
             'repositories' => $repositories,
@@ -44,6 +43,6 @@ class DashboardController extends Controller
 
         updateRepositories::dispatch($user->username, $user->id);
 
-        return response()->json(['message' => 'Job dispatched successfully!']);
+        return response()->json(['message' => 'Data is being fetched...']);
     }
 }
